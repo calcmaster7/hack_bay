@@ -1,0 +1,33 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <div class="listings-grid">
+        {% for listing in active_listings %}
+            <a href="{% url 'listing_detail' listing.id %}" class="listing-link">
+                <div class="listing">
+                    <div class="center-div">
+                        <h3>{{ listing.title }}</h3>
+                        <img  src="{{ listing.image_url }}" alt="{{ listing.title }}" width = 300>
+                        <p>Category: {{ listing.category }}</p>
+                    </div>
+                    <p>{{ listing.description }}</p>
+                    <table>
+                        <tr>
+                            <td>Starting bid: {{ listing.min_start_bid }}</p></td>
+                            <td colspan="2" style="padding-left: 20px;"><a href="{% url 'listing_detail' listing.id %}" class="place-bid-link">  Place Bid!</a></td> 
+                        </tr>
+                        <tr>
+                            <td>
+                                {% if listing.highest_bid %}
+                                    <p>Current bid: {{ listing.highest_bid.bid_ammount }}</p>
+                                {% else %}
+                                    <p>No bids yet.</p>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+{% endblock %}

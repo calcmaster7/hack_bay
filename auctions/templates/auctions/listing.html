@@ -1,0 +1,86 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+    <h2>Listing</h2>
+    <h1>{{listing.title}} </h1>
+    <p>{{listing.category}}</p>
+    <img  src="{{ listing.image_url }}" alt="{{ listing.title }}" width = 300>
+    <p>{{listing.description}}</p> 
+    <p>{{listing.min_start_bid}}</p>
+    <p>{{listing.listing_creator.username}}</p> 
+    {% if listing.active %}
+        This auction is currently open!
+    {% if listing.highest_bid %}
+        Highest bid: {{ listing.highest_bid.bid_ammount }}
+    {% else %}
+        No bids yet
+    {% endif %}
+    {% else %}
+         This listing is now closed.
+    {% endif %}
+    
+    {% if user.is_authenticated %}
+        {% if listing.active %}
+            <form method="post" action="{% url 'update_watchlist' listing.id %}">
+                {% csrf_token %}
+                <input type="radio" id="yes" name="watchlist" value="yes" {% if listing in user.watchlist.all %}checked{% endif %}>
+                <label for="yes">Yes</label>
+                <input type="radio" id="no" name="watchlist" value="no" {% if listing not in user.watchlist.all %}checked{% endif %}>
+                <label for="no">No</label>
+                <input type="submit" value="Update Watchlist">
+            </form>
+        {% endif %}
+        {% if listing.active %}
+            <form action="{% url 'place_bid' listing.id %}" method="post">
+                {% csrf_token %}
+                <input type="number" step="0.01" name="bid_amount" placeholder="Enter your bid">
+                <input type="submit" value="Place Bid">
+            </form>
+        {% else %}
+            {% if winner_string %}
+                <p>{{ winner_string }}</p>
+            {% endif %} 
+        {% endif %}
+
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        {% if user == listing.listing_creator and listing.active is True %}
+            <form method="POST" action="{% url 'close_auction' listing.id %}">
+                {% csrf_token %}
+                <button type="submit">Close Auction</button>
+            </form>
+        {% endif %} 
+        {% for comment in listing.listing_comments.all %}
+            <p>{{ comment.user.username }}: {{ comment.timestamp }}</p>
+            <p> {{comment.text}} </p>
+        {% endfor %}
+        <form method="POST" action="{% url 'make_comment' listing.id %}">
+            {% csrf_token %}
+            {{ comment_form.as_p }} <!-- this will render the form fields as <p> elements -->
+            <input type="submit"  value="Save Your Comment">
+        </form>
+        
+     {% else %}
+    <!-- HTML for non users -->
+    {% endif %}
+
+
+    <!--  if a user is signed in( i ) 
+
+        if logged in user == listing_creator,
+     then we need to give this user the ability to close this auction, thus 
+     declaring the winner
+    -->
+  
+
+
+
+
+
+{% endblock %}

@@ -1,0 +1,29 @@
+
+
+/* Set the background color of the entire page to black */
+body {
+    padding: 10px;
+    background-color: black;
+    color: #33ff33; /* Neon Green Text Color */
+    font-family: 'Courier New', monospace; /* Font similar to the Matrix */
+}
+
+/* Set the styles for the header */
+header {
+    background-color: #111111; /* Slightly lighter than black */
+    color: #33ff33; /* Neon Green Text Color */
+    padding: 20px;
+    text-align: center;
+}
+
+/* Set the styles for the links */
+a {
+    color: #33ff33; /* Neon Green Text Color */
+    text-decoration: none;
+}
+
+/* Apply styles on hover to links */
+a:hover {
+    color: #00cc00; /* Slightly different shade of green */
+    text-decoration: underline;
+}

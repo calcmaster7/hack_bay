@@ -1,0 +1,155 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>{% block title %}Hacker Gadget Auctions{% endblock %}</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link href="{% static 'auctions/styles.css' %}" rel="stylesheet">
+    <style>
+      body {
+        background-color: black;
+    }
+
+   .listings-grid {
+    column-count: 4;
+    column-gap: 20px;
+    } 
+
+    .listing-link {
+        text-decoration: none;
+        color: inherit;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        overflow: hidden;
+        display: inline-block; /* Ensures the break-inside property works correctly */
+        width: 100%; /* Ensures the listing link takes the full width of the column */
+        break-inside: avoid;
+    }
+
+    .listing {
+        padding: 15px;
+    } 
+    h1 {
+        text-align: center;
+        /* other styling properties */
+    }
+    .center-div {
+        text-align: center;
+    }
+    .place-bid-link {
+    display: inline-block; /* Allow width and height properties to work */
+    width: 100%; /* Take up the full width of the cell */
+    height: 200%; /* Take up the full height of the cell */
+    background-color: rgba(0,0,0,0.5); /* Some color to make it stand out */
+    color: inherit;
+    text-decoration: none;
+    text-align: center; /* Center the text horizontally */
+    line-height: 2; /* Center the text vertically */
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    }
+    table {
+    width: 100%; /* Ensure the table fills its container */
+    table-layout: fixed; /* This makes cells of equal width */
+    }
+
+    td {
+        width: 50%; /* Make each cell half the width of the table */
+        box-sizing: border-box; /* This includes padding and borders in an element's total width and height */
+        }
+    .terminal {
+    background-color: black;
+    color: lightgreen;
+    padding: 10px;
+    font-family: 'Courier New', monospace;
+    border-radius: 5px;
+    font-size: 16px;
+    padding-right: 25%;
+    padding-left: 10%;
+}
+
+.prompt, .output {
+    margin: 0;
+}
+
+.output {
+    margin-left: 2em;
+}
+            .title-div {
+                width: 600px;
+                border: 3px solid lightgreen;
+                text-align: center;
+            } 
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+.spacer {
+    flex-grow: 1;
+}
+           .nav-item a {
+    font-weight: bold;
+    font-size: 20px;
+} 
+          
+    </style>
+    </head>
+    <body>
+      <div class="header">
+    <div class="spacer"></div>
+    <div class="title" style="display: flex; justify-content: center;">
+        <h1 style="border: 3px solid whitesmoke; padding: 10px; max-width: 800px;">Hacker Gadget Auction</h1>
+    </div>
+    <div class="terminal">
+        <p class="prompt">$ echo $USER</p>
+        <p class="output" style="font-size: 2em;">
+            {% if user.is_authenticated %}
+                {{ user.username }}
+            {% else %}
+                Not logged in.
+            {% endif %}
+        </p>
+    </div>
+</div> 
+        <div class="center-div">Fake Auction site, meant soley for education purposes, where you can post,make bids on, and hopefuly learn about fun hacker toys!</div>   
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'index' %}">Active Listings</a>
+            </li>
+            {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'create_listing' %}">Create Listing</a>
+                </li>
+         
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'watchlist' %}">Watch List</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'categories' %}">categories</a>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">Log In</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'register' %}">Register</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'categories' %}">categories</a>
+                </li>
+               
+
+            {% endif %}
+        </ul>
+         <hr>
+        {% block body %}
+        {% endblock %}
+    </body>
+</html>
